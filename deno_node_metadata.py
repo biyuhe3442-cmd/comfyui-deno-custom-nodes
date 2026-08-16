@@ -10,6 +10,15 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - Python < 3.11
     tomllib = None
 
+try:
+    from .deno_localization import description as localized_description
+    from .deno_localization import input_tooltip as localized_input_tooltip
+    from .deno_localization import output_tooltip as localized_output_tooltip
+except ImportError:  # pragma: no cover - direct module loading in tests
+    from deno_localization import description as localized_description
+    from deno_localization import input_tooltip as localized_input_tooltip
+    from deno_localization import output_tooltip as localized_output_tooltip
+
 
 PACKAGE_NAME = "deno-custom-nodes"
 
@@ -28,8 +37,8 @@ def get_current_version() -> str:
 def _version_description_prefix() -> str:
     current = get_current_version()
     return (
-        f"DENO Custom Nodes v{current}.\n"
-        "The DENO info button checks Comfy Registry and marks this node when an update is available."
+        f"DENO Custom Nodes v{current}（非官方简体中文增强版）。\n"
+        "DENO 信息按钮会检查 Comfy Registry；有可用更新时会在节点上标记。"
     )
 
 
@@ -457,7 +466,8 @@ def _multi_lora_slot_tooltip(input_name: str, ltx: bool) -> str:
 
 
 def _tooltip_for(node_id: str, input_name: str) -> str:
-    return NODE_INPUT_TOOLTIPS.get(node_id, {}).get(input_name) or _pattern_tooltip(node_id, input_name)
+    fallback = NODE_INPUT_TOOLTIPS.get(node_id, {}).get(input_name) or _pattern_tooltip(node_id, input_name)
+    return localized_input_tooltip(node_id, input_name, fallback)
 
 
 def _inject_input_tooltips(node_id: str, input_types: dict) -> dict:
@@ -489,10 +499,15 @@ def _inject_input_tooltips(node_id: str, input_types: dict) -> dict:
 
 def decorate_node_classes(node_class_mappings: dict) -> None:
     for node_id, node_cls in node_class_mappings.items():
-        node_cls.DESCRIPTION = _with_version_prefix(getattr(node_cls, "DESCRIPTION", ""))
+        node_cls.DESCRIPTION = _with_version_prefix(
+            localized_description(node_id, getattr(node_cls, "DESCRIPTION", ""))
+        )
         output_tooltips = NODE_OUTPUT_TOOLTIPS.get(node_id)
         if output_tooltips:
-            node_cls.OUTPUT_TOOLTIPS = tuple(output_tooltips)
+            node_cls.OUTPUT_TOOLTIPS = tuple(
+                localized_output_tooltip(node_id, index, tooltip)
+                for index, tooltip in enumerate(output_tooltips)
+            )
 
         if getattr(node_cls, "_deno_metadata_wrapped", False):
             continue

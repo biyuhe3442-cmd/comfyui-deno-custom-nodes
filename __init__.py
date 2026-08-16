@@ -41,6 +41,11 @@ try:
 except ImportError:
     from deno_node_metadata import decorate_node_classes
 
+try:
+    from .deno_localization import node_display_name
+except ImportError:
+    from deno_localization import node_display_name
+
 INTERPOLATION_MODES = ["lanczos", "bicubic", "bilinear", "area", "nearest", "nearest-exact"]
 RESIZE_BOX_RESIZE_METHODS = [
     "Center Crop (Fill)",
@@ -467,7 +472,7 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "DenoResolutionSetup": "(Deno) Resize Box",
+    "DenoResolutionSetup": node_display_name("DenoResolutionSetup", "(Deno) Resize Box"),
 }
 
 # Each optional node is imported in isolation so a single failing module
@@ -537,7 +542,9 @@ for _module_name, _class_name, _display_name in _OPTIONAL_NODES:
         )
         continue
     NODE_CLASS_MAPPINGS[_class_name] = _node_class
-    NODE_DISPLAY_NAME_MAPPINGS[_class_name] = _display_name
+    # This is a visual title only.  `_class_name` remains the node type saved
+    # in workflows, while the English title stays available as a fallback.
+    NODE_DISPLAY_NAME_MAPPINGS[_class_name] = node_display_name(_class_name, _display_name)
     # Keep the class importable as a package attribute (back-compat: this
     # was the case while these were eager `from .x import Y` imports).
     globals()[_class_name] = _node_class

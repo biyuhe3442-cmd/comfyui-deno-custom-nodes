@@ -428,22 +428,12 @@ def test_node_registration_exports_expected_nodes():
         "DenoVideoCompare",
         "DenoVideoPreview",
     ]
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoResolutionSetup"] == "(Deno) Resize Box"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoMultiImageLoader"] == "(Deno) Multi Image Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoMiniMaxH3ReferenceImageLoader"] == (
-        "(Deno) MiniMax H3 Multi Reference Image Loader"
-    )
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoMiniMaxH3ReferenceToVideo"] == (
-        "(Deno) MiniMax H3 Reference to Video"
-    )
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoAudioTranscript"] == "(Deno) Audio Transcript"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoAudioAnalysisFinalize"] == (
-        "(Deno) Audio Analysis Finalizer"
-    )
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoAdvancedImageSourceLoader"] == "(Deno) Advanced Image Source Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXSequencer"] == "(Deno) LTX Sequencer"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTX23PresetLoader"] == "(Deno) LTX Model Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXModelDownloader"] == "(Deno) Easy Model Download Helper"
+    # Display names are localized, while the mapping key above remains the
+    # compatibility-critical node type used by existing workflows.
+    for node_id in package.NODE_CLASS_MAPPINGS:
+        display_name = package.NODE_DISPLAY_NAME_MAPPINGS[node_id]
+        assert display_name.startswith("(Deno) ")
+        assert " | " in display_name
     assert "DenoLTX8GBModelDownloader" not in package.NODE_CLASS_MAPPINGS
     assert package.DENO_NODE_REPLACEMENTS == (
         {
@@ -491,24 +481,9 @@ def test_node_registration_exports_expected_nodes():
             ],
         },
     )
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoMultiLoraLoader"] == "(Deno) Multi LoRA Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXMultiLoraLoader"] == "(Deno) LTX Multi LoRA Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXPromptGuide"] == "(Deno) LTX Prompt Guide"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXTiledSpatialUpscaler"] == "(Deno) LTX Tiled Spatial Upscaler"
     assert "DenoLTXStepFusedTiledSampler" not in package.NODE_CLASS_MAPPINGS
     assert "DenoLTXStepFusedTiledSampler" not in package.NODE_DISPLAY_NAME_MAPPINGS
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLTXAVStepFusedTiledSampler"] == "(Deno) LTX High resolution Tiled Sampler"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoBerniniPromptGuide"] == "(Deno) Bernini Prompt Guide"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoIdeogramDirector"] == "(Deno) Ideogram Director"
     assert "DenoTranslate" not in package.NODE_CLASS_MAPPINGS
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoLocalLLMRefiner"] == "(Deno) Local LLM Loader"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoAIReviewGate"] == "(Deno) Local LLM Reviewer"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoPromptText"] == "(Deno) Prompt Text"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoRTXVFXEasyUpscale"] == "(Deno) RTX Video Super Resolution"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoRTXVFXVideoFinisher"] == "(Deno) RTX Video Super Resolution (2 Pass)"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoImageCompare"] == "(Deno) Image Compare"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoVideoCompare"] == "(Deno) Video Compare"
-    assert package.NODE_DISPLAY_NAME_MAPPINGS["DenoVideoPreview"] == "(Deno) Video Preview"
     assert package.WEB_DIRECTORY == "./web/js"
 
 

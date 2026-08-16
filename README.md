@@ -1,5 +1,13 @@
 # Deno Custom Nodes
 
+> **Non-official Simplified Chinese enhanced fork notice:** this Fork is based on
+> [Deno2026/comfyui-deno-custom-nodes](https://github.com/Deno2026/comfyui-deno-custom-nodes).
+> It adds a Simplified Chinese display layer and Chinese usage guidance while
+> preserving the original node ids, workflow values, APIs, and core logic.
+> Original functionality and copyright remain with the upstream author and
+> contributors. This project is distributed under GNU GPL v3.0. See
+> [README.zh-CN.md](README.zh-CN.md) for Chinese installation and upstream-sync notes.
+
 [English](README.md) | [한국어](docs/README.ko.md) | [日本語](docs/README.ja.md) | [简体中文](docs/README.zh-CN.md) | [Español](docs/README.es.md) | [Português](docs/README.pt-PT.md) | [Português (Brasil)](docs/README.pt-BR.md) | [Bahasa Indonesia](docs/README.id.md)
 
 [YouTube Channel](https://www.youtube.com/@Denoise-AI)

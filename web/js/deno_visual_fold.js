@@ -10,12 +10,12 @@ const HIDDEN_W = 2;
 const HIDDEN_H = 2;
 const HIDDEN_TITLE = "\u200b";
 const HOVER_MAX_ITEMS = 12;
-const FOLD_LABEL = "Deno: Fold Selected";
-const FOLD_GROUP_LABEL = "Deno: Fold Selected Group";
-const UNFOLD_LABEL = "Deno: Unfold Group";
-const RENAME_LABEL = "Deno: Rename Fold Group";
-const ALIGN_MENU_PREFIX = "Deno: Align";
-const GROUP_ALIGN_MENU_PREFIX = "Deno: Align Groups";
+const FOLD_LABEL = "Deno：折叠选中节点";
+const FOLD_GROUP_LABEL = "Deno：折叠选中分组";
+const UNFOLD_LABEL = "Deno：展开分组";
+const RENAME_LABEL = "Deno：重命名折叠分组";
+const ALIGN_MENU_PREFIX = "Deno：对齐";
+const GROUP_ALIGN_MENU_PREFIX = "Deno：对齐分组";
 const CHIP_MAX_W = 260;
 const LABEL_MAX_LENGTH = 34;
 const COMMANDS = Object.freeze({
@@ -28,36 +28,36 @@ const COMMANDS = Object.freeze({
 const VISUAL_FOLD_COMMANDS = [
   {
     id: COMMANDS.fold,
-    label: "Fold selected nodes",
-    tooltip: "Fold selected nodes",
+    label: "折叠选中节点",
+    tooltip: "折叠选中节点",
     icon: "deno-visual-fold-command-icon",
     function: () => executeSelectionCommand(COMMANDS.fold),
   },
   {
     id: COMMANDS.foldGroup,
-    label: "Fold selected group",
-    tooltip: "Fold selected group",
+    label: "折叠选中分组",
+    tooltip: "折叠选中分组",
     icon: "deno-visual-fold-command-icon",
     function: () => executeSelectionCommand(COMMANDS.foldGroup),
   },
   {
     id: COMMANDS.unfold,
-    label: "Unfold group",
-    tooltip: "Unfold group",
+    label: "展开分组",
+    tooltip: "展开分组",
     icon: "deno-visual-unfold-command-icon",
     function: () => executeSelectionCommand(COMMANDS.unfold),
   },
   {
     id: COMMANDS.rename,
-    label: "Rename folded group",
-    tooltip: "Rename folded group",
+    label: "重命名折叠分组",
+    tooltip: "重命名折叠分组",
     icon: "deno-visual-rename-command-icon",
     function: () => executeSelectionCommand(COMMANDS.rename),
   },
   {
     id: COMMANDS.align,
-    label: "Align selection",
-    tooltip: "Align selection",
+    label: "对齐选中项",
+    tooltip: "对齐选中项",
     icon: "deno-visual-align-command-icon",
     function: () => executeSelectionCommand(COMMANDS.align),
   },
@@ -71,10 +71,10 @@ let lastCanvasPointerEvent = null;
 let commandButtonA11yFrame = 0;
 
 const COMMAND_ICON_LABELS = Object.freeze([
-  [".deno-visual-fold-command-icon", "Fold selected nodes"],
-  [".deno-visual-unfold-command-icon", "Unfold this group"],
-  [".deno-visual-rename-command-icon", "Rename folded group"],
-  [".deno-visual-align-command-icon", "Align or distribute"],
+  [".deno-visual-fold-command-icon", "折叠选中节点"],
+  [".deno-visual-unfold-command-icon", "展开此分组"],
+  [".deno-visual-rename-command-icon", "重命名折叠分组"],
+  [".deno-visual-align-command-icon", "对齐或分布"],
 ]);
 
 function appGraph() {
@@ -758,7 +758,7 @@ function renameFoldGroup(node) {
 
   const anchor = group.find((candidate) => foldMeta(candidate)?.index === 0) || node;
   const current = foldDisplayLabel(foldMeta(anchor));
-  const initial = current === "Folded" ? "" : current;
+  const initial = current === "Folded" || current === "已折叠" ? "" : current;
   showRenameDialog(initial, (value) => {
     const label = normalizeFoldLabel(value);
     for (const item of group) {
@@ -784,13 +784,13 @@ function showRenameDialog(initialValue, onSubmit) {
   renameDialogEl = document.createElement("div");
   renameDialogEl.className = "deno-visual-rename-overlay";
   renameDialogEl.innerHTML = `
-    <div class="deno-visual-rename-dialog" role="dialog" aria-modal="true" aria-label="Rename folded group">
-      <div class="deno-visual-rename-title">Rename Fold Group</div>
-      <div class="deno-visual-rename-help">Use a short label. Leave empty to show Folded.</div>
+    <div class="deno-visual-rename-dialog" role="dialog" aria-modal="true" aria-label="重命名折叠分组">
+      <div class="deno-visual-rename-title">重命名折叠分组</div>
+      <div class="deno-visual-rename-help">请输入简短名称；留空时显示“已折叠”。</div>
       <input class="deno-visual-rename-input" type="text" maxlength="${LABEL_MAX_LENGTH}" autocomplete="off" />
       <div class="deno-visual-rename-actions">
-        <button type="button" class="deno-visual-rename-cancel">Cancel</button>
-        <button type="button" class="deno-visual-rename-save">Save</button>
+        <button type="button" class="deno-visual-rename-cancel">取消</button>
+        <button type="button" class="deno-visual-rename-save">保存</button>
       </div>
     </div>
   `;
@@ -1446,12 +1446,12 @@ function ensureAlignMenu() {
   alignMenuEl.setAttribute("role", "menu");
 
   const items = [
-    ["left", "|<", "Left", "Align Left"],
-    ["right", ">|", "Right", "Align Right"],
-    ["top", "^", "Top", "Align Top"],
-    ["bottom", "v", "Bottom", "Align Bottom"],
-    ["horizontal", "<->", "Space H", "Distribute Horizontal"],
-    ["vertical", "^v", "Space V", "Distribute Vertical"],
+    ["left", "|<", "左对齐", "左对齐"],
+    ["right", ">|", "右对齐", "右对齐"],
+    ["top", "^", "顶端对齐", "顶端对齐"],
+    ["bottom", "v", "底端对齐", "底端对齐"],
+    ["horizontal", "<->", "水平分布", "水平分布"],
+    ["vertical", "^v", "垂直分布", "垂直分布"],
   ];
   for (const [action, icon, label, title] of items) {
     const button = document.createElement("button");
