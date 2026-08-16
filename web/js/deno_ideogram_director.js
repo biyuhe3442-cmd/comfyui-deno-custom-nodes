@@ -1902,8 +1902,8 @@
         // seed state = an explicit two-segment switch [Fixed | Random] so the current mode is
         // never ambiguous (the lone lock icon read as "is it locked, or does clicking lock it?").
         const seedSeg = el("span", "idd-seedseg"); stop(seedSeg);
-        const segFixed = el("button", "idd-seedopt idd-fixed"); segFixed.textContent = "Fixed";
-        const segRandom = el("button", "idd-seedopt idd-random"); segRandom.textContent = "Random";
+        const segFixed = el("button", "idd-seedopt idd-fixed"); segFixed.textContent = "固定";
+        const segRandom = el("button", "idd-seedopt idd-random"); segRandom.textContent = "随机";
         seedSeg.append(segFixed, segRandom);
         let seedLocked = getW("seed_lock", true) !== false;   // default Fixed
         const paintLock = () => {
@@ -1923,22 +1923,22 @@
         seedPill.append(seedLbl, seedIn, seedSeg);
         // primary action: "Generate" until the first result exists, then "Regenerate" (a brand-new
         // user hasn't generated anything yet — "re-" reads like someone else's verb).
-        const regen = el("button", "idd-regen"); regen.textContent = "Generate";
+        const regen = el("button", "idd-regen"); regen.textContent = "生成";
         regen.title = "Run the graph with this caption · Ctrl+Enter";
-        const targetBtn = mkBtn("All"); targetBtn.classList.add("idd-targetbtn");
-        targetBtn.title = "Generate target: All outputs";
+        const targetBtn = mkBtn("全部"); targetBtn.classList.add("idd-targetbtn");
+        targetBtn.title = "生成目标：全部输出";
         const paintRegen = () => {
-          regen.textContent = node._idd && node._idd._last ? "Regenerate" : "Generate";
+          regen.textContent = node._idd && node._idd._last ? "重新生成" : "生成";
           fitTopBarSoon();
         };
-        const info = el("div", "idd-i"); info.textContent = "i"; info.title = "Edit the JSON caption on the board, then Generate.";
+        const info = el("div", "idd-i"); info.textContent = "i"; info.title = "在画板上编辑 JSON 描述后，点击“生成”。";
         const fsBtn = el("div", "idd-i idd-fsbtn"); fsBtn.textContent = "⛶"; fsBtn.title = "Fullscreen (Esc to close)";
         // Layout presets gallery lives in the TOP bar (left cluster) for quick reach.
-        const LAYOUTS_BTN_LABEL = "Layouts";
+        const LAYOUTS_BTN_LABEL = "布局";
         const layoutsBtn = mkBtn(LAYOUTS_BTN_LABEL); layoutsBtn.classList.add("idd-toplay");
         layoutsBtn.title = "Layout preset gallery — pick a composition and it fills the ratio + starter boxes; save your own too";
         layoutsBtn.onclick = (e) => { e.stopPropagation(); openLayoutGallery(); };
-        const IMPORT_REVIEW = "Ask Before Replacing";
+        const IMPORT_REVIEW = "替换前询问";
         const IMPORT_AUTO = "Always Replace";
         const IMPORT_CHOICES = [IMPORT_REVIEW, IMPORT_AUTO];
         const LEGACY_IMPORT = {
@@ -2310,8 +2310,8 @@
             targetBtn.textContent = "Missing";
             targetBtn.title = "Generate target is missing or no longer downstream from this Director. Choose All outputs or another output.";
           } else {
-            targetBtn.textContent = "All";
-            targetBtn.title = "Generate target: All outputs. This preserves the old Generate behavior.";
+            targetBtn.textContent = "全部";
+            targetBtn.title = "生成目标：全部输出。";
           }
           fitTopBarSoon();
         }
@@ -2429,7 +2429,7 @@
           "العربية": "Arabic",
           "हिन्दी": "Hindi",
         };
-        const translateBtn = mkBtn("Language"); translateBtn.classList.add("idd-langbtn");
+        const translateBtn = mkBtn("语言"); translateBtn.classList.add("idd-langbtn");
         const translateRefreshBtn = mkBtn("↻"); translateRefreshBtn.classList.add("idd-refreshbtn");
         Object.assign(translateRefreshBtn.style, {
           width: "30px",
@@ -2545,7 +2545,7 @@
           const engine = getTranslationEngine();
           const out = normalizeTranslateValue(getW("translate_output", NO_TRANSLATION));
           if (out !== ENGLISH_PROMPT) setW("translate_output", ENGLISH_PROMPT);
-          translateBtn.textContent = "Language";
+          translateBtn.textContent = "语言";
           translateBtn.classList.toggle("on", view !== VIEW_DEFAULT);
           translateBtn.title = "Language: " + view
             + " · Output: " + outputLanguageLabel()
@@ -2715,7 +2715,7 @@
             return true;
           } catch (err) {
             console.error("[Director] final English preflight failed", err);
-            translateBtn.textContent = oldText || "Language";
+          translateBtn.textContent = oldText || "语言";
             setTimeout(() => { paintTranslate(); }, 1200);
             return false;
           }
@@ -2788,14 +2788,14 @@
           const modal = el("div", "idd-modal idd-gal-fs idd-lang-full"); modal.tabIndex = -1; stop(modal);
           const panel = el("div", "idd-modal-panel idd-lang-panel");
           const h = el("div", "idd-modal-h");
-          const left = el("div", "idd-h-left"); const ht = el("span", "t"); ht.textContent = "Language"; left.append(ht);
+          const left = el("div", "idd-h-left"); const ht = el("span", "t"); ht.textContent = "语言"; left.append(ht);
           const right = el("div", "idd-h-right");
           const closeBtn = el("button", "idd-mbtn"); closeBtn.textContent = "Close";
           right.append(closeBtn);
           h.append(left, el("div", "idd-h-center"), right);
           const hint = el("div", "idd-ml");
-          hint.textContent = "Pick the language you want to read and edit on the board. Output stays English for generation. Literal TEXT box words are kept exactly.";
-          const search = el("input", "idd-langsearch"); search.type = "text"; search.placeholder = "Search language...";
+          hint.textContent = "选择画板阅读和编辑时使用的语言。生成输出保持英文；TEXT 文本框中的文字会原样保留。";
+          const search = el("input", "idd-langsearch"); search.type = "text"; search.placeholder = "搜索语言…";
           const status = el("div", "idd-langstatus");
           status.textContent = "Descriptions are translated for the editor view. Box positions, colors, and TEXT words are not translated.";
           const grid = el("div", "idd-langgrid"); stop(grid);
@@ -3745,12 +3745,12 @@
         railTools.append(railWideBtn);
 
         // Summary (high_level_description) + Background
-        const summary = el("textarea", "idd-area"); summary.placeholder = 'Whole scene in 1–2 sentences — e.g. "A neon-lit ramen shop at night, steam rising, a lone customer at the counter"'; stop(summary);
+        const summary = el("textarea", "idd-area"); summary.placeholder = '用 1–2 句话描述整体画面，例如：“夜晚霓虹灯照亮的拉面店，蒸汽升起，柜台前坐着一位顾客”'; stop(summary);
         summary.addEventListener("input", () => setW("high_level_description", summary.value));
-        const bgArea = el("textarea", "idd-area"); bgArea.placeholder = 'The setting / background — e.g. "A rain-slicked alley at night, glowing signs, wet asphalt reflections"'; stop(bgArea);
+        const bgArea = el("textarea", "idd-area"); bgArea.placeholder = '场景 / 背景，例如：“夜晚雨后的小巷，发光招牌映在潮湿的柏油路上”'; stop(bgArea);
         bgArea.addEventListener("input", () => setW("background", bgArea.value));
-        const summarySec = mkSec("Summary", summary);
-        const bgSec = mkSec("Background", bgArea);
+        const summarySec = mkSec("画面概述", summary);
+        const bgSec = mkSec("背景", bgArea);
         const summaryWireHint = el("div", "idd-wirehint");
         const bgWireHint = el("div", "idd-wirehint");
         summaryWireHint.textContent = "Connected input overrides this saved value during generation.";
@@ -4082,8 +4082,8 @@
         }
 
         const styleSec = el("div", "idd-sec");
-        const styleLbl = el("div", "idd-seclbl"); styleLbl.textContent = "Style";
-        const stylePresetBtn = el("button", "idd-preset-btn"); stylePresetBtn.textContent = "Presets";
+        const styleLbl = el("div", "idd-seclbl"); styleLbl.textContent = "风格";
+        const stylePresetBtn = el("button", "idd-preset-btn"); stylePresetBtn.textContent = "预设";
         stylePresetBtn.title = "Style preset gallery — pick a look and it fills the style fields; save your own too";
         stylePresetBtn.onclick = (e) => { e.stopPropagation(); openStyleGallery(); };
         styleLbl.append(el("span", "idd-sp"), stylePresetBtn);
@@ -4105,7 +4105,7 @@
         photoIn.addEventListener("input", () => setW("photo", photoIn.value));
         artIn.addEventListener("input", () => setW("art_style", artIn.value));
         fields.append(aesIn, ligIn, medIn, photoIn, artIn);
-        const palLbl = el("div", "idd-ml"); palLbl.textContent = "🎨 Style color palette (whole image)";
+        const palLbl = el("div", "idd-ml"); palLbl.textContent = "🎨 风格配色（整张图像）";
         const pal = el("div", "idd-pal");
         styleSec.append(styleLbl, seg, fields, palLbl, pal);
 
@@ -4251,7 +4251,7 @@
         // Elements section
         const elemSec = el("div", "idd-sec");
         const elemHead = el("div", "idd-sechead");
-        const elemLbl = el("div", "idd-seclbl"); elemLbl.textContent = "Elements";
+        const elemLbl = el("div", "idd-seclbl"); elemLbl.textContent = "元素";
         const addBboxBtn = mkBtn("+BBOX"); addBboxBtn.classList.add("idd-addbbox");
         addBboxBtn.title = "Add a new BBOX at the center of the board";
         elemHead.append(elemLbl, addBboxBtn);
@@ -4363,7 +4363,7 @@
             row.addEventListener("mouseleave", () => { const bx = ov.querySelector(`[data-idd-box-id="${b.id}"]`); if (bx) bx.classList.remove("hov"); });
             row.append(grip, n, c, t, ty, en, dup, x); elemList.append(row);
           });
-          if (!boxes.length) { const e0 = el("div", "idd-elem"); e0.style.color = "var(--dim)"; e0.textContent = "Drag on the board or use +BBOX"; elemList.append(e0); }
+          if (!boxes.length) { const e0 = el("div", "idd-elem"); e0.style.color = "var(--dim)"; e0.textContent = "在画板上拖动，或使用 +BBOX"; elemList.append(e0); }
         }
 
         // rail order: Style is kept above Elements so Photo/Art stays visible at the compact default size.
@@ -4378,8 +4378,8 @@
         // (Gestalt proximity: three different jobs get separators; the destructive Clear stays isolated
         // far right with a confirm step.)
         const bot = el("div", "idd-bot");
-        const save = mkBtn("Save Image"); const auto = mkBtn("Auto-save"); const copy = mkBtn("Copy JSON");
-        const paste = mkBtn("Paste JSON"); const clear = mkBtn("Clear Board", true);
+        const save = mkBtn("保存图像"); const auto = mkBtn("自动保存"); const copy = mkBtn("复制 JSON");
+        const paste = mkBtn("粘贴 JSON"); const clear = mkBtn("清空画板", true);
         const undoBtn = mkBtn("↶"); undoBtn.classList.add("idd-histbtn", "idd-undo");
         const redoBtn = mkBtn("↷"); redoBtn.classList.add("idd-histbtn", "idd-redo");
         save.title = "Save the latest result image into ComfyUI's output folder";
@@ -4390,7 +4390,7 @@
         undoBtn.title = "Undo board edit";
         redoBtn.title = "Redo board edit";
         // toggle affordance: the leading ●/○ shows the auto-save STATE at a glance
-        const paintAuto = () => { auto.textContent = (autoOn ? "● " : "○ ") + "Auto-save"; auto.classList.toggle("on", autoOn); };
+        const paintAuto = () => { auto.textContent = (autoOn ? "● " : "○ ") + "自动保存"; auto.classList.toggle("on", autoOn); };
         // save is meaningless before a result exists; success flashes confirmation
         const paintSave = () => { save.disabled = !(node._idd && node._idd._last); };
         const vsep = () => el("span", "idd-vsep");
@@ -5133,7 +5133,7 @@
             if (await copyTextBestEffort(text)) {
               copyBtn.textContent = "✓ Copied";
               copy.textContent = "✓ Copied";
-              setTimeout(() => { copy.textContent = "Copy JSON"; close(); }, 900);
+              setTimeout(() => { copy.textContent = "复制 JSON"; close(); }, 900);
             } else {
               copyBtn.textContent = "Press Ctrl+C";
               hint.textContent = "Copy is still blocked. The JSON is selected, so press Ctrl+C.";
@@ -5152,7 +5152,7 @@
           e.stopPropagation();
           const done = (label) => {
             copy.textContent = label;
-            setTimeout(() => { copy.textContent = "Copy JSON"; }, 900);
+            setTimeout(() => { copy.textContent = "复制 JSON"; }, 900);
           };
           try {
             let cap = assembleCaption();
@@ -5207,7 +5207,7 @@
           const close = () => { try { modal.remove(); } catch (e) {} };
           const doApply = () => {
             if (!ta.value.trim()) { err.textContent = "Nothing pasted yet — press Ctrl+V first."; err.style.display = ""; ta.focus(); return; }
-            if (applyPastedText(ta.value)) { close(); paste.textContent = "✓ Pasted"; setTimeout(() => { paste.textContent = "Paste JSON"; }, 1100); }
+            if (applyPastedText(ta.value)) { close(); paste.textContent = "✓ 已粘贴"; setTimeout(() => { paste.textContent = "粘贴 JSON"; }, 1100); }
             else { err.textContent = "That isn't a valid Ideogram caption JSON."; err.style.display = ""; }
           };
           ta.addEventListener("input", () => { err.style.display = "none"; });
@@ -5260,12 +5260,12 @@
           e.stopPropagation();
           clearRunAlert();
           if (!clearArm) {
-            clear.textContent = "Clear Board?"; clear.classList.add("arm");
-            clearArm = setTimeout(() => { clearArm = null; clear.textContent = "Clear Board"; clear.classList.remove("arm"); }, 2500);
+            clear.textContent = "确认清空画板？"; clear.classList.add("arm");
+            clearArm = setTimeout(() => { clearArm = null; clear.textContent = "清空画板"; clear.classList.remove("arm"); }, 2500);
             return;
           }
           clearTimeout(clearArm); clearArm = null;
-          clear.textContent = "Clear Board"; clear.classList.remove("arm");
+          clear.textContent = "清空画板"; clear.classList.remove("arm");
           clearBoardState();
         });
         save.addEventListener("click", async (e) => {
@@ -5273,7 +5273,7 @@
           try {
             const r = node._idd._last; if (!r) return;
             await api.fetchApi("/deno/ideogram_director/save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ filename: r.filename, subfolder: r.subfolder, type: r.type, prefix: getW("save_prefix", "Ideogram_Director") }) });
-            save.textContent = "✓ Saved"; setTimeout(() => { save.textContent = "Save Image"; }, 900);
+            save.textContent = "✓ 已保存"; setTimeout(() => { save.textContent = "保存图像"; }, 900);
           } catch (x) { console.error("[Director] save failed", x); }
         });
         let autoOn = false;
